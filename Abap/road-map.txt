@@ -1,0 +1,71 @@
+[ BẢN ĐỒ KỸ NĂNG ABAP DEVELOPER ]
+ │
+ ├── 🛠️ PHẦN BẠN ĐÃ LIỆT KÊ (Giao diện & Tích hợp)
+ │    │
+ │    ├── UI (User Interface & Output)
+ │    │    ├── Màn hình (Selection Screen & Dynpro)
+ │    │    │    ├── Selection Screen: Tạo khối 'BEGIN OF BLOCK', chia Tabstrip 'BEGIN OF TABBED BLOCK'
+ │    │    │    ├── Lifecycle Events: Điều khiển ẩn/hiện bằng 'LOOP AT SCREEN' tại PBO (OUTPUT) và bắt lỗi tại PAI
+ │    │    │    └── Module Pool (T-Code: SE51): Vẽ Custom Screen (100/200), điều khiển luồng PROCESS BEFORE OUTPUT / AFTER INPUT
+ │    │    │
+ │    │    ├── ALV Standard / Custom
+ │    │    │    ├── ALV hướng hàm (Cổ điển): Gọi hàm 'REUSE_ALV_GRID_DISPLAY_LVC' làm báo cáo nhanh
+ │    │    │    ├── ALV hướng đối tượng (Hiện đại): Sử dụng Class 'CL_SALV_TABLE' chuẩn OOP, bật full nút Sort/Filter
+ │    │    │    └── Custom Container ALV: Kết hợp 'CL_GUI_CUSTOM_CONTAINER' + 'CL_GUI_ALV_GRID' nhúng bảng vào màn hình Module Pool
+ │    │    │
+ │    │    ├── Excel Custom (Form biểu mẫu chuẩn)
+ │    │    │    ├── Thư viện OOP (Z-Class): Gọi Class 'ZCL_EXCEL', gộp ô 'merge_cells', đổ màu bảng mã Hex, cài công thức '=SUM(...)'
+ │    │    │    └── Kỹ thuật Template (T-Code: SMW0): Upload file Excel mẫu của Kế toán, code ABAP mở file mờ và điền dữ liệu vào ô trống
+ │    │    │
+ │    │    └── Smartform PDF (In ấn tài liệu)
+ │    │         ├── Thiết kế Form (T-Code: SMARTFORMS): Tạo Page Format (A4/A5), dùng Table Painter chia cột, quản lý nhảy trang Main Window
+ │    │         ├── Chuyển đổi PDF ngầm: Cấu hình 'getotf = X', gọi hàm 'CONVERT_OTF' dịch sang nhị phân XSTRING để tự download hoặc gửi Email
+ │    │         └── Quản lý đồ họa (T-Code: SE78): Upload và quản lý ảnh Logo công ty (.BMP/.JPEG) để chèn vào góc tiêu đề Form
+ │    │
+ │    └── Core Logic (Xử lý Nghiệp vụ & Kết nối)
+ │         ├── Tạo Tool (Batch Processing Tools)
+ │         │    ├── Đọc file tốc độ cao: Gọi Class 'CL_FDT_XL_SERVICES' phân rã Excel dạng XSTRING thẳng vào RAM, nhanh gấp 20 lần kiểu cũ
+ │         │    └── Kiểm soát giao dịch BAPI: Gọi 'BAPI_TRANSACTION_COMMIT (wait = X)' hoặc 'BAPI_TRANSACTION_ROLLBACK' cho từng dòng đơn hàng
+ │         │
+ │         ├── Debug Code (Gỡ lỗi hệ thống)
+ │         │    ├── Debug nâng cao: Đặt Watchpoint theo dõi biến thay đổi giá trị, đặt Breakpoint tại câu lệnh (Statement) hoặc tin nhắn (Message)
+ │         │    └── Debug tiến trình ngầm: Vào T-Code SM37, chọn Job, gõ lệnh 'JDBG' tại ô lệnh để mở màn hình gỡ lỗi thời gian thực
+ │         │
+ │         ├── Enhance (Mở rộng hệ thống chuẩn)
+ │         │    ├── Tìm kiếm BAdI: Đặt breakpoint tại 'CL_EXITHANDLER=>GET_INSTANCE' để quét tìm tên BAdI chạy qua Transaction chuẩn
+ │         │    └── Implicit Enhancement: Nhấn nút xoắn ốc 🌀 trong SE37/SE38 để chèn code custom vào ngay đầu/cuối của các hàm chuẩn SAP
+ │         │
+ │         └── Call / Create API (REST / JSON / RFC)
+ │              ├── Tạo API inbound (Ngoài gọi vào): Dùng T-Code SEGW xây dựng OData Service, viết logic tại Method '_GET_ENTITYSET' của Class '_DPC_EXT'
+ │              ├── Gọi API outbound (SAP gọi ra): Dùng Class 'CL_HTTP_CLIENT', truyền Bearer Token, gọi Class '/UI2/CL_JSON' để parse chuỗi JSON
+ │              └── Gọi RFC liên Server: Cấu hình cổng trong T-Code SM59, thực hiện lệnh 'CALL FUNCTION ... DESTINATION ...' bọc trong khối bắt lỗi mạng
+ │
+ └── 🚀 PHẦN BẠN CẦN BỔ SUNG (Hạ tầng & Xu hướng mới)
+      │
+      ├── Tầng DB (Database & Tối ưu hiệu năng)
+      │    ├── CDS Views (Core Data Services): Định nghĩa các mô hình dữ liệu, gom bảng tính toán sẵn (JOIN, GROUP BY) ngay tại tầng Database
+      │    ├── AMDP (ABAP Managed Database Procedures): Viết hàm xử lý bằng ngôn ngữ SQLScript (HANA DB) bên trong Class ABAP để xử lý dữ liệu lớn siêu tốc
+      │    └── SQL Tối ưu hiệu năng (T-Code: ST05): Chạy SQL Trace để check độ tối ưu câu lệnh SELECT; luôn dùng 'FOR ALL ENTRIES' bọc kèm điều kiện check bảng trống
+      │
+      ├── Tầng Vận hành (System Operation)
+      │    ├── Background Job (T-Code: SM36 / SM37): Đóng gói chương trình thành Variant, đặt lịch tự động chạy ngầm (Ví dụ: Tự đọc Excel lúc 12h đêm)
+      │    └── Lock Objects (Cơ chế khóa dữ liệu): Gọi hàm 'ENQUEUE_Z...' để khóa dữ liệu khi sửa, dùng xong gọi 'DEQUEUE_Z...' để mở khóa, tránh xung đột chéo
+      │
+      ├── Tầng Quản trị (Code Management & Infrastructure)
+      │    ├── Đọc Dump (T-Code: ST22) & System Log (SM21): Phân tích log crash hệ thống để định vị chính xác dòng code lỗi và khối dữ liệu bị sập
+      │    ├── Quản lý TR (T-Code: SE09 / SE10): Gom đối tượng vào đúng loại Transport Request (Workbench/Customizing), check Version trước khi Release
+      │    └── SNOTE (SAP Notes Management): Tìm kiếm và áp dụng các bản vá lỗi (Patch code) do chính SAP phát hành khi phát hiện lỗi hệ thống chuẩn
+      │
+      └── Tầng Nghiệp vụ (Functional Mindset)
+      │    ├── Phân hệ MM (Procure to Pay): Thuộc lòng mối quan hệ bảng PR (EBAN) ➔ PO (EKKO/EKPO) ➔ Nhập kho MIGO (MKPF/MSEG) ➔ Hóa đơn MIRO (RBKP/RSEG)
+      │    ├── Phân hệ SD (Order to Cash): Thuộc lòng mối quan hệ bảng SO (VBAK/VBAP) ➔ Giao hàng (LIKP/LIPS) ➔ Xuất kho (WADCO) ➔ Hóa đơn Billing (VBRK/VBRP)
+      │    ├── Phân hệ FI (Financial Accounting): Nắm chắc cấu trúc Sổ cái G/L, Công nợ nhà cung cấp AP (LFA1), Công nợ khách hàng AR (KNA1), Chứng từ kế toán (BKPF/BSEG)
+      │    └── Tự đọc tài liệu FS (Functional Specification): Tư duy đối chiếu tài liệu nghiệp vụ với cấu trúc kỹ thuật SAP, chủ động bắt lỗi logic của Consultant trước khi code
+      └── Tầng Quản trị (Code Management & Infrastructure)
+          ├── Đọc Dump (T-Code: ST22) & System Log (SM21): ...
+          ├── Quản lý TR (T-Code: SE09 / SE10 / SE01): Gom đối tượng, phân biệt Workbench vs Customizing, thực hiện Release (mũi tên xanh), kiểm tra version object trước khi gửi
+          ├── Vận chuyển Code (T-Code: STMS - Transport Management System)
+          │    ├ ── Quy trình chuẩn DEV ➔ QAS ➔ PRD: Import TR vào từng hệ thống, kiểm tra log import (cờ xanh/đỏ)
+          │    ├ ── Xử lý lỗi thường gặp: Lỗi thiếu object (import lại), lỗi lock (giải lock bằng SM12), lỗi version conflict (so sánh bằng SE03)
+          │    └ ── Tạo Collective Request (gộp nhiều TR) và Repair Request (sửa trực tiếp trên PRD - dùng khi cực kỳ khẩn cấp)
+          └── SN OTE (SAP Notes Management): ...
